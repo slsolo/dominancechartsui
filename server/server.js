@@ -27,13 +27,22 @@ let sheets = google.sheets('v4');
 sheets.spreadsheets.values.get({
     auth: jwtClient,
     spreadsheetId: spreadsheetId,
-    range: 'Fur!A2:A138'
+    range: `${sheetName}!A2:A`
 }, function (err, response) {
     if (err) {
         console.error(err);
     } else {
+        let placedFurList = [];
         for (let row of response.data.values) {
-            console.log(row[0]);
+            if (row[0] !== undefined) {
+                placedFurList.push(row[0]);
+            } else {
+                break;
+            }
+        }
+        console.log(placedFurList.length);
+        for (fur in placedFurList) {
+            console.log(placedFurList[fur]);
         }
     }
-})
+});
