@@ -11,7 +11,7 @@ let jwtClient = new google.auth.JWT(
   ["https://www.googleapis.com/auth/spreadsheets"]
 );
 //authenticate request
-jwtClient.authorize(function(err, tokens) {
+jwtClient.authorize(function (err, tokens) {
   if (err) {
     console.log(err);
   } else {
@@ -26,9 +26,9 @@ sheets.spreadsheets.values.get(
   {
     auth: jwtClient,
     spreadsheetId: spreadsheetId,
-    range: `${sheetName}!A2:A`
+    range: `${sheetName}!A2:A`,
   },
-  function(err, response) {
+  function (err, response) {
     if (err) {
       console.error(err);
     } else {
@@ -43,6 +43,27 @@ sheets.spreadsheets.values.get(
       console.log(placedFurList.length);
       for (fur in placedFurList) {
         console.log(placedFurList[fur]);
+      }
+
+      let unplacedFirList = [];
+      let unplaced = false;
+      for (let row of response.data.values) {
+        if (row[0] === "Unplaced Traits") {
+          unplaced = true;
+          continue;
+        }
+        if (row[0] === "New Furs") {
+          unplaced = false;
+        }
+        if (unplaced && row[0] !== undefined) {
+          unplacedFirList.push(row[0]);
+        }
+      }
+
+      console.log(``);
+      console.log(`Unplaced`);
+      for (fur in unplacedFirList) {
+        console.log(unplacedFirList[fur]);
       }
     }
   }
