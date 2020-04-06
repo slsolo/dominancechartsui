@@ -77,14 +77,12 @@ sheets.spreadsheets.get(
       // for (fur in unplacedFirList) {
       //   console.log(unplacedFirList[fur]);
       // }
-      for (sheet in response.data.sheets) {
-        if (
-          response.data.sheets[sheet].properties.title === "About us" ||
-          response.data.sheets[sheet].properties.title === "User manual"
-        ) {
-          continue;
-        }
-        console.log(response.data.sheets[sheet].properties.title);
+      let sheetData = response.data.sheets;
+
+      for (d in sheetData[1].data[0].rowData) {
+        console.log(
+          sheetData[1].data[0].rowData[d].values[0].effectiveValue.stringValue
+        );
       }
     }
   }
