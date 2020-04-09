@@ -1,6 +1,8 @@
 const fs = require("fs");
 const readline = require("readline");
-const { google } = require("googleapis");
+const {
+  google
+} = require("googleapis");
 const credentials = require("./credentials");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 
@@ -21,20 +23,49 @@ jwtClient.authorize(function (err, tokens) {
 
 let spreadsheetId = "10-9WtItK0LWyUSZqnI_6sGngJXtgVsSaSYJd2GN3qqw";
 let dominanceData = {
-  furs: {},
-  eyes: {},
-  confettiFurs: {},
-  eyeShape: {},
-  pupil: {},
-  shades: {},
-  tails: {},
-  ears: {},
-  whiskers: {},
-  whiskerShapes: {},
+  furs: {
+    placed: {},
+    unplaced: {}
+  },
+  eyes: {
+    placed: {},
+    unplaced: {}
+  },
+  confettiFurs: {
+    placed: {},
+    unplaced: {}
+  },
+  eyeShape: {
+    placed: {},
+    unplaced: {}
+  },
+  pupil: {
+    placed: {},
+    unplaced: {}
+  },
+  shades: {
+    placed: {},
+    unplaced: {}
+  },
+  tails: {
+    placed: {},
+    unplaced: {}
+  },
+  ears: {
+    placed: {},
+    unplaced: {}
+  },
+  whiskers: {
+    placed: {},
+    unplaced: {}
+  },
+  whiskerShapes: {
+    placed: {},
+    unplaced: {}
+  },
 };
 let sheets = google.sheets("v4");
-sheets.spreadsheets.get(
-  {
+sheets.spreadsheets.get({
     auth: jwtClient,
     spreadsheetId: spreadsheetId,
     includeGridData: true,
@@ -44,46 +75,50 @@ sheets.spreadsheets.get(
     if (err) {
       console.error(err);
     } else {
-      // let placedFurList = [];
-      // for (let row of response.data.values) {
-      //   if (row[0] !== undefined) {
-      //     placedFurList.push(row[0]);
-      //   } else {
-      //     break;
-      //   }
-      // }
-      // console.log(placedFurList.length);
-      // for (fur in placedFurList) {
-      //   console.log(placedFurList[fur]);
-      // }
-
-      // let unplacedFirList = [];
-      // let unplaced = false;
-      // for (let row of response.data.values) {
-      //   if (row[0] === "Unplaced Traits") {
-      //     unplaced = true;
-      //     continue;
-      //   }
-      //   if (row[0] === "New Furs") {
-      //     unplaced = false;
-      //   }
-      //   if (unplaced && row[0] !== undefined) {
-      //     unplacedFirList.push(row[0]);
-      //   }
-      // }
-
-      // console.log(``);
-      // console.log(`Unplaced`);
-      // for (fur in unplacedFirList) {
-      //   console.log(unplacedFirList[fur]);
-      // }
       let sheetData = response.data.sheets;
 
       for (d in sheetData[1].data[0].rowData) {
-        console.log(
-          sheetData[1].data[0].rowData[d].values[0].effectiveValue.stringValue
-        );
+        if (d == 0) {
+          continue;
+        }
+        if (
+          sheetData[1].data[0].rowData[d].values[0].effectiveValue === undefined
+        ) {
+          break;
+        }
+        dominanceData.furs.placed[
+          sheetData[1].data[0].rowData[d].values[0].userEnteredValue.stringValue
+        ] = d;
       }
+
+      for (d in sheetData[2].data[0].rowData) {
+        if (d == 0) {
+          continue;
+        }
+        if (
+          sheetData[2].data[0].rowData[d].values[0].effectiveValue === undefined
+        ) {
+          break;
+        }
+        dominanceData.eyes.placed[
+          sheetData[2].data[0].rowData[d].values[0].effectiveValue.stringValue
+        ] = d;
+      }
+
+      for (d in sheetData[4].data[0].rowData) {
+        if (d < 2) {
+          continue;
+        }
+        if (
+          sheetData[4].data[0].rowData[d].values[0].effectiveValue === undefined
+        ) {
+          break;
+        }
+        dominanceData.confettiFurs.placed[
+          sheetData[4].data[0].rowData[d].values[0].effectiveValue.stringValue
+        ] = d;
+      }
+      console.log(JSON.stringify(dominanceData));
     }
   }
 );
