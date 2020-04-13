@@ -1,5 +1,3 @@
-const fs = require("fs");
-const readline = require("readline");
 const {
   google
 } = require("googleapis");
@@ -10,7 +8,7 @@ let jwtClient = new google.auth.JWT(
   credentials.client_email,
   null,
   credentials.private_key,
-  ["https://www.googleapis.com/auth/spreadsheets"]
+  SCOPES
 );
 //authenticate request
 jwtClient.authorize(function (err, tokens) {
@@ -20,48 +18,56 @@ jwtClient.authorize(function (err, tokens) {
     console.log("Successfully connected!");
   }
 });
-
+// names for list of ranges extracted from the spreadsheet
 let spreadsheetId = "10-9WtItK0LWyUSZqnI_6sGngJXtgVsSaSYJd2GN3qqw";
+let dominanceDataKeys = [
+  ["furs"],
+  ["eyes"],
+  ["shades", "tails", "ears", "whiskers", "whiskerShapes"],
+  ["confettiFurs"],
+  ["genesisFurs"],
+  ["genesisEyes"],
+];
 let dominanceData = {
   furs: {
     placed: {},
-    unplaced: {}
+    unplaced: {},
+  },
+  genesisFurs: {
+    placed: {},
+    unplaced: {},
   },
   eyes: {
     placed: {},
-    unplaced: {}
+    unplaced: {},
+  },
+  genesisEyes: {
+    placed: {},
+    unplaced: {},
   },
   confettiFurs: {
     placed: {},
-    unplaced: {}
-  },
-  eyeShape: {
-    placed: {},
-    unplaced: {}
-  },
-  pupil: {
-    placed: {},
-    unplaced: {}
+    unplaced: {},
   },
   shades: {
     placed: {},
-    unplaced: {}
+    unplaced: {},
   },
   tails: {
     placed: {},
-    unplaced: {}
+    unplaced: {},
   },
   ears: {
     placed: {},
-    unplaced: {}
+    unplaced: {},
   },
   whiskers: {
     placed: {},
-    unplaced: {}
+    unplaced: {},
   },
   whiskerShapes: {
     placed: {},
-    unplaced: {}
+    unplaced: {},
   },
 };
 let sheets = google.sheets("v4");
@@ -69,7 +75,19 @@ sheets.spreadsheets.get({
     auth: jwtClient,
     spreadsheetId: spreadsheetId,
     includeGridData: true,
-    ranges: [],
+    ranges: [
+      "Fur!A2:A",
+      "Eyes!A2:A",
+      "Other!D3:D",
+      "Other!F3:F",
+      "Other!H3:H",
+      "Other!J3:J",
+      "Other!L3:L",
+      "Confetti furs!A3:A",
+      "Genesis Furs!A12:A",
+      "Genesis Eyes!A14:A",
+    ],
+    //ranges: [],
   },
   function (err, response) {
     if (err) {
@@ -77,46 +95,23 @@ sheets.spreadsheets.get({
     } else {
       let sheetData = response.data.sheets;
 
-      for (d in sheetData[1].data[0].rowData) {
-        if (d == 0) {
-          continue;
+      for (s in sheetData) {
+        for (c in sheetData[s].data) {
+          for (d in sheetData[s].data[c].rowData) {
+            if (
+              !sheetData[s].data[c].rowData[d].hasOwnProperty("values") ||
+              sheetData[s].data[c].rowData[d].values[0].effectiveValue ===
+              undefined
+            ) {
+              break;
+            }
+            dominanceData[dominanceDataKeys[s][c]].placed[
+              sheetData[s].data[c].rowData[
+                d
+              ].values[0].effectiveValue.stringValue
+            ] = d;
+          }
         }
-        if (
-          sheetData[1].data[0].rowData[d].values[0].effectiveValue === undefined
-        ) {
-          break;
-        }
-        dominanceData.furs.placed[
-          sheetData[1].data[0].rowData[d].values[0].userEnteredValue.stringValue
-        ] = d;
-      }
-
-      for (d in sheetData[2].data[0].rowData) {
-        if (d == 0) {
-          continue;
-        }
-        if (
-          sheetData[2].data[0].rowData[d].values[0].effectiveValue === undefined
-        ) {
-          break;
-        }
-        dominanceData.eyes.placed[
-          sheetData[2].data[0].rowData[d].values[0].effectiveValue.stringValue
-        ] = d;
-      }
-
-      for (d in sheetData[4].data[0].rowData) {
-        if (d < 2) {
-          continue;
-        }
-        if (
-          sheetData[4].data[0].rowData[d].values[0].effectiveValue === undefined
-        ) {
-          break;
-        }
-        dominanceData.confettiFurs.placed[
-          sheetData[4].data[0].rowData[d].values[0].effectiveValue.stringValue
-        ] = d;
       }
       console.log(JSON.stringify(dominanceData));
     }
