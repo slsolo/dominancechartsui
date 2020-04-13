@@ -1,6 +1,4 @@
-const {
-  google
-} = require("googleapis");
+const { google } = require("googleapis");
 const credentials = require("./credentials");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 
@@ -19,8 +17,8 @@ jwtClient.authorize(function (err, tokens) {
   }
 });
 // names for list of ranges extracted from the spreadsheet
-let spreadsheetId = "10-9WtItK0LWyUSZqnI_6sGngJXtgVsSaSYJd2GN3qqw";
-let dominanceDataKeys = [
+const spreadsheetId = "10-9WtItK0LWyUSZqnI_6sGngJXtgVsSaSYJd2GN3qqw";
+const dominanceDataKeys = [
   ["furs"],
   ["eyes"],
   ["shades", "tails", "ears", "whiskers", "whiskerShapes"],
@@ -70,8 +68,10 @@ let dominanceData = {
     unplaced: {},
   },
 };
+const FIRST_COLUMN = 0;
 let sheets = google.sheets("v4");
-sheets.spreadsheets.get({
+sheets.spreadsheets.get(
+  {
     auth: jwtClient,
     spreadsheetId: spreadsheetId,
     includeGridData: true,
@@ -87,7 +87,6 @@ sheets.spreadsheets.get({
       "Genesis Furs!A12:A",
       "Genesis Eyes!A14:A",
     ],
-    //ranges: [],
   },
   function (err, response) {
     if (err) {
@@ -95,21 +94,23 @@ sheets.spreadsheets.get({
     } else {
       let sheetData = response.data.sheets;
 
-      for (s in sheetData) {
-        for (c in sheetData[s].data) {
-          for (d in sheetData[s].data[c].rowData) {
+      for (sheet in sheetData) {
+        for (column in sheetData[sheet].data) {
+          for (row in sheetData[sheet].data[column].rowData) {
             if (
-              !sheetData[s].data[c].rowData[d].hasOwnProperty("values") ||
-              sheetData[s].data[c].rowData[d].values[0].effectiveValue ===
-              undefined
+              !sheetData[sheet].data[column].rowData[row].hasOwnProperty(
+                "values"
+              ) ||
+              sheetData[sheet].data[column].rowData[row].values[FIRST_COLUMN]
+                .effectiveValue === undefined
             ) {
               break;
             }
-            dominanceData[dominanceDataKeys[s][c]].placed[
-              sheetData[s].data[c].rowData[
-                d
-              ].values[0].effectiveValue.stringValue
-            ] = d;
+            dominanceData[dominanceDataKeys[sheet][column]].placed[
+              sheetData[sheet].data[column].rowData[row].values[
+                FIRST_COLUMN
+              ].effectiveValue.stringValue
+            ] = row;
           }
         }
       }
