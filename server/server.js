@@ -9,7 +9,7 @@ let jwtClient = new google.auth.JWT(
   SCOPES
 );
 //authenticate request
-jwtClient.authorize(function (err, tokens) {
+jwtClient.authorize(function (err, _tokens) {
   if (err) {
     console.log(err);
   } else {
@@ -70,51 +70,113 @@ let dominanceData = {
 };
 const FIRST_COLUMN = 0;
 let sheets = google.sheets("v4");
-sheets.spreadsheets.get(
-  {
-    auth: jwtClient,
-    spreadsheetId: spreadsheetId,
-    includeGridData: true,
-    ranges: [
-      "Fur!A2:A",
-      "Eyes!A2:A",
-      "Other!D3:D",
-      "Other!F3:F",
-      "Other!H3:H",
-      "Other!J3:J",
-      "Other!L3:L",
-      "Confetti furs!A3:A",
-      "Genesis Furs!A12:A",
-      "Genesis Eyes!A14:A",
-    ],
-  },
-  function (err, response) {
-    if (err) {
-      console.error(err);
-    } else {
-      let sheetData = response.data.sheets;
 
-      for (sheet in sheetData) {
-        for (column in sheetData[sheet].data) {
-          for (row in sheetData[sheet].data[column].rowData) {
-            if (
-              !sheetData[sheet].data[column].rowData[row].hasOwnProperty(
-                "values"
-              ) ||
-              sheetData[sheet].data[column].rowData[row].values[FIRST_COLUMN]
-                .effectiveValue === undefined
-            ) {
-              break;
+function fetchPlacedTraits() {
+  sheets.spreadsheets.get(
+    {
+      auth: jwtClient,
+      spreadsheetId: spreadsheetId,
+      includeGridData: true,
+      ranges: [
+        "Fur!A2:A",
+        "Eyes!A2:A",
+        "Other!D3:D",
+        "Other!F3:F",
+        "Other!H3:H",
+        "Other!J3:J",
+        "Other!L3:L",
+        "Confetti furs!A3:A",
+        "Genesis Furs!A12:A",
+        "Genesis Eyes!A14:A",
+      ],
+    },
+    function (err, response) {
+      if (err) {
+        console.error(err);
+      } else {
+        let sheetData = response.data.sheets;
+
+        for (sheet in sheetData) {
+          for (column in sheetData[sheet].data) {
+            for (row in sheetData[sheet].data[column].rowData) {
+              if (
+                !sheetData[sheet].data[column].rowData[row].hasOwnProperty(
+                  "values"
+                ) ||
+                sheetData[sheet].data[column].rowData[row].values[FIRST_COLUMN]
+                  .effectiveValue === undefined
+              ) {
+                break;
+              }
+              dominanceData[dominanceDataKeys[sheet][column]].placed[
+                sheetData[sheet].data[column].rowData[row].values[
+                  FIRST_COLUMN
+                ].effectiveValue.stringValue
+              ] = row;
             }
-            dominanceData[dominanceDataKeys[sheet][column]].placed[
-              sheetData[sheet].data[column].rowData[row].values[
-                FIRST_COLUMN
-              ].effectiveValue.stringValue
-            ] = row;
           }
         }
+        // console.log(JSON.stringify(dominanceData));
       }
-      console.log(JSON.stringify(dominanceData));
     }
-  }
-);
+  );
+}
+
+function fetchUnplacedFurs() {
+  let max = 136;
+  // for (let fur in Object.keys(dominanceData.furs.placed)) {
+  //   console.log(fur);
+  //   if (dominanceData.furs.placed[fur] > max) {
+  //     max = dominanceData.furs.placed[fur];
+  //   }
+  // }
+  // console.log(max);
+
+  var furRanges = [
+    `Fur!B2:B${max}`,
+    `Fur!C2:C${max}`,
+    `Fur!D2:D${max}`,
+    `Fur!E2:E${max}`,
+  ];
+
+  sheets.spreadsheets.get(
+    {
+      auth: jwtClient,
+      spreadsheetId: spreadsheetId,
+      includeGridData: true,
+      ranges: furRanges,
+    },
+    function (err, response) {
+      if (err) {
+        console.error(err);
+      } else {
+        let sheetData = response.data.sheets;
+        console.log(JSON.stringify(sheetData[0].merges));
+        for (sheet in sheetData) {
+          for (column in sheetData[sheet].data) {
+            for (row in sheetData[sheet].data[column].rowData) {
+              if (
+                !sheetData[sheet].data[column].rowData[row].hasOwnProperty(
+                  "values"
+                ) ||
+                sheetData[sheet].data[column].rowData[row].values[FIRST_COLUMN]
+                  .effectiveValue === undefined
+              ) {
+                continue;
+              }
+              dominanceData["furs"].unplaced[
+                sheetData[sheet].data[column].rowData[row].values[
+                  FIRST_COLUMN
+                ].effectiveValue.stringValue
+              ] = parseInt(row) + 1;
+            }
+          }
+        }
+        console.log(JSON.stringify(dominanceData.furs.unplaced));
+      }
+    }
+  );
+}
+
+fetchPlacedTraits();
+fetchUnplacedFurs();
