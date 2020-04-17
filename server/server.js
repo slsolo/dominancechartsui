@@ -69,6 +69,7 @@ let dominanceData = {
   },
 };
 const FIRST_COLUMN = 0;
+const columns = ["A", "B", "C", "D", "E"];
 let sheets = google.sheets("v4");
 
 function fetchPlacedTraits() {
@@ -139,6 +140,8 @@ function fetchUnplacedFurs() {
     `Fur!E2:E${max}`,
   ];
 
+  let merges = [];
+
   sheets.spreadsheets.get(
     {
       auth: jwtClient,
@@ -151,8 +154,9 @@ function fetchUnplacedFurs() {
         console.error(err);
       } else {
         let sheetData = response.data.sheets;
-        console.log(JSON.stringify(sheetData[0].merges));
         for (sheet in sheetData) {
+          for (merge in sheetData[sheet].merges) {
+          }
           for (column in sheetData[sheet].data) {
             for (row in sheetData[sheet].data[column].rowData) {
               if (
