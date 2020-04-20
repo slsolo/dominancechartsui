@@ -16,8 +16,8 @@ jwtClient.authorize(function (err, _tokens) {
     console.log("Successfully connected!");
   }
 });
-// names for list of ranges extracted from the spreadsheet
 const spreadsheetId = "10-9WtItK0LWyUSZqnI_6sGngJXtgVsSaSYJd2GN3qqw";
+// names for list of ranges extracted from the spreadsheet
 const dominanceDataKeys = [
   ["furs"],
   ["eyes"],
@@ -69,15 +69,13 @@ let dominanceData = {
   },
 };
 const FIRST_COLUMN = 0;
-const columns = ["A", "B", "C", "D", "E"];
 let sheets = google.sheets("v4");
 
 function fetchPlacedTraits() {
-  sheets.spreadsheets.get(
+  sheets.spreadsheets.values.batchGet(
     {
       auth: jwtClient,
       spreadsheetId: spreadsheetId,
-      includeGridData: true,
       ranges: [
         "Fur!A2:A",
         "Eyes!A2:A",
@@ -95,30 +93,22 @@ function fetchPlacedTraits() {
       if (err) {
         console.error(err);
       } else {
-        let sheetData = response.data.sheets;
-
+        let sheetData = response.data.valueRanges;
         for (sheet in sheetData) {
-          for (column in sheetData[sheet].data) {
-            for (row in sheetData[sheet].data[column].rowData) {
-              if (
-                !sheetData[sheet].data[column].rowData[row].hasOwnProperty(
-                  "values"
-                ) ||
-                sheetData[sheet].data[column].rowData[row].values[FIRST_COLUMN]
-                  .effectiveValue === undefined
-              ) {
-                break;
-              }
-              dominanceData[dominanceDataKeys[sheet][column]].placed[
-                sheetData[sheet].data[column].rowData[row].values[
-                  FIRST_COLUMN
-                ].effectiveValue.stringValue
-              ] = row;
+          console.log(JSON.stringify(sheetData[sheet]));
+          for (column in sheetData[sheet].values[0]) {
+            if (!sheetData[sheet].values[0].length === 0) {
+              break;
             }
+            dominanceData[dominanceDataKeys[sheet][column]].placed[
+              sheetData[sheet].data[column].rowData[row].values[
+                FIRST_COLUMN
+              ].effectiveValue.stringValue
+            ] = row;
           }
         }
-        // console.log(JSON.stringify(dominanceData));
       }
+      console.log(JSON.stringify(dominanceData));
     }
   );
 }
@@ -146,7 +136,6 @@ function fetchUnplacedFurs() {
     {
       auth: jwtClient,
       spreadsheetId: spreadsheetId,
-      includeGridData: true,
       ranges: furRanges,
     },
     function (err, response) {
@@ -156,6 +145,7 @@ function fetchUnplacedFurs() {
         let sheetData = response.data.sheets;
         for (sheet in sheetData) {
           for (merge in sheetData[sheet].merges) {
+            console.log(JSON.stringify(sheetData[sheet].merges[merge]));
           }
           for (column in sheetData[sheet].data) {
             for (row in sheetData[sheet].data[column].rowData) {
@@ -168,6 +158,15 @@ function fetchUnplacedFurs() {
               ) {
                 continue;
               }
+              console.log(
+                `${JSON.stringify(
+                  sheetData[sheet].data[column].rowData[row].values[0]
+                    .effectiveValue.stringValue
+                )} ${JSON.stringify(
+                  sheetData[sheet].data[column].rowData[row].values[0]
+                    .effectiveFormat.borders
+                )}`
+              );
               dominanceData["furs"].unplaced[
                 sheetData[sheet].data[column].rowData[row].values[
                   FIRST_COLUMN
@@ -183,4 +182,4 @@ function fetchUnplacedFurs() {
 }
 
 fetchPlacedTraits();
-fetchUnplacedFurs();
+//fetchUnplacedFurs();
