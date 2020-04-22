@@ -1,9 +1,17 @@
 {
   "name": "solo-development-server",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rjspencer1989/solo-development"
+  },
+  "license": "mit",
   "dependencies": {
     "express": "^4.17.1",
-    "googleapis": "^49.0.0"
+    "googleapis": "^49.0.0",
+    "mongoose": "5.9.7",
+    "express-restify-mongoose": "6.0.0",
+    "dotenv-flow": "3.1.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
