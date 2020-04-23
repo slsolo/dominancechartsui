@@ -94,6 +94,7 @@ function fetchPlacedTraits() {
         console.error(err);
       } else {
         let sheetData = response.data.valueRanges;
+        console.log(JSON.stringify(sheetData));
         for (sheet in sheetData) {
           console.log(JSON.stringify(sheetData[sheet]));
           for (column in sheetData[sheet].values[0]) {
