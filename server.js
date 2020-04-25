@@ -1,11 +1,13 @@
-const { google } = require("googleapis");
-const credentials = require("./credentials");
+// eslint-disable-next-line prettier/prettier
+const {
+  google
+} = require("googleapis");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 
 let jwtClient = new google.auth.JWT(
-  credentials.client_email,
+  process.env.CLIENT_EMAIL,
   null,
-  credentials.private_key,
+  process.env.PRIVATE_KEY,
   SCOPES
 );
 //authenticate request
@@ -72,8 +74,7 @@ const FIRST_COLUMN = 0;
 let sheets = google.sheets("v4");
 
 function fetchPlacedTraits() {
-  sheets.spreadsheets.values.batchGet(
-    {
+  sheets.spreadsheets.values.batchGet({
       auth: jwtClient,
       spreadsheetId: spreadsheetId,
       ranges: [
@@ -133,8 +134,7 @@ function fetchUnplacedFurs() {
 
   let merges = [];
 
-  sheets.spreadsheets.get(
-    {
+  sheets.spreadsheets.get({
       auth: jwtClient,
       spreadsheetId: spreadsheetId,
       ranges: furRanges,
@@ -155,7 +155,7 @@ function fetchUnplacedFurs() {
                   "values"
                 ) ||
                 sheetData[sheet].data[column].rowData[row].values[FIRST_COLUMN]
-                  .effectiveValue === undefined
+                .effectiveValue === undefined
               ) {
                 continue;
               }
