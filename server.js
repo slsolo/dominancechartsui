@@ -2,7 +2,7 @@
 const { google } = require("googleapis");
 const express = require("express");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
-console.log(process.env.PRIVATE_KEY);
+let port = process.env.PORT;
 let jwtClient = new google.auth.JWT(
   process.env.CLIENT_EMAIL,
   null,
@@ -187,4 +187,4 @@ function fetchUnplacedFurs() {
 //fetchUnplacedFurs();
 let server = express();
 server.get("/", (req, res) => res.send("Hello World!"));
-server.listen(3000, () => console.log("app listening on port 3000"));
+server.listen(port, () => console.log("app listening on port 3000"));
