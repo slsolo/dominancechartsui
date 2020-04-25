@@ -10,13 +10,13 @@ let jwtClient = new google.auth.JWT(
   SCOPES
 );
 //authenticate request
-jwtClient.authorize(function (err, _tokens) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Successfully connected!");
-  }
-});
+// jwtClient.authorize(function (err, _tokens) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log("Successfully connected!");
+//   }
+// });
 const spreadsheetId = "10-9WtItK0LWyUSZqnI_6sGngJXtgVsSaSYJd2GN3qqw";
 // names for list of ranges extracted from the spreadsheet
 const dominanceDataKeys = [
@@ -183,7 +183,7 @@ function fetchUnplacedFurs() {
   );
 }
 
-fetchPlacedTraits();
+//fetchPlacedTraits();
 //fetchUnplacedFurs();
 let server = express();
 server.get("/", (req, res) => res.send("Hello World!"));
