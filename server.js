@@ -1,7 +1,6 @@
 // eslint-disable-next-line prettier/prettier
-const {
-  google
-} = require("googleapis");
+const { google } = require("googleapis");
+const express = require("express");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 
 let jwtClient = new google.auth.JWT(
@@ -74,7 +73,8 @@ const FIRST_COLUMN = 0;
 let sheets = google.sheets("v4");
 
 function fetchPlacedTraits() {
-  sheets.spreadsheets.values.batchGet({
+  sheets.spreadsheets.values.batchGet(
+    {
       auth: jwtClient,
       spreadsheetId: spreadsheetId,
       ranges: [
@@ -134,7 +134,8 @@ function fetchUnplacedFurs() {
 
   let merges = [];
 
-  sheets.spreadsheets.get({
+  sheets.spreadsheets.get(
+    {
       auth: jwtClient,
       spreadsheetId: spreadsheetId,
       ranges: furRanges,
@@ -155,7 +156,7 @@ function fetchUnplacedFurs() {
                   "values"
                 ) ||
                 sheetData[sheet].data[column].rowData[row].values[FIRST_COLUMN]
-                .effectiveValue === undefined
+                  .effectiveValue === undefined
               ) {
                 continue;
               }
@@ -184,3 +185,6 @@ function fetchUnplacedFurs() {
 
 fetchPlacedTraits();
 //fetchUnplacedFurs();
+let server = express();
+server.get("/", (req, res) => res.send("Hello World!"));
+server.listen(3000, () => console.log("app listening on port 3000"));
