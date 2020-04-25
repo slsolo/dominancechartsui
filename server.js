@@ -2,7 +2,7 @@
 const { google } = require("googleapis");
 const express = require("express");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
-
+console.log(process.env.PRIVATE_KEY);
 let jwtClient = new google.auth.JWT(
   process.env.CLIENT_EMAIL,
   null,
