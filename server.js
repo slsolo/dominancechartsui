@@ -3,20 +3,17 @@ const { google } = require("googleapis");
 const express = require("express");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 let port = process.env.PORT || 3000;
-let jwtClient = new google.auth.JWT(
-  process.env.CLIENT_EMAIL,
-  null,
-  process.env.PRIVATE_KEY,
-  SCOPES
-);
+const keys = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+let jwtClient = google.auth.fromJSON(keys);
+jwtClient.scopes = SCOPES;
 //authenticate request
-// jwtClient.authorize(function (err, _tokens) {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log("Successfully connected!");
-//   }
-// });
+jwtClient.authorize(function (err, _tokens) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Successfully connected!");
+  }
+});
 const spreadsheetId = "10-9WtItK0LWyUSZqnI_6sGngJXtgVsSaSYJd2GN3qqw";
 // names for list of ranges extracted from the spreadsheet
 const dominanceDataKeys = [
@@ -96,19 +93,19 @@ function fetchPlacedTraits() {
       } else {
         let sheetData = response.data.valueRanges;
         console.log(JSON.stringify(sheetData));
-        for (sheet in sheetData) {
-          console.log(JSON.stringify(sheetData[sheet]));
-          for (column in sheetData[sheet].values[0]) {
-            if (!sheetData[sheet].values[0].length === 0) {
-              break;
-            }
-            dominanceData[dominanceDataKeys[sheet][column]].placed[
-              sheetData[sheet].data[column].rowData[row].values[
-                FIRST_COLUMN
-              ].effectiveValue.stringValue
-            ] = row;
-          }
-        }
+        // for (sheet in sheetData) {
+        //   console.log(JSON.stringify(sheetData[sheet]));
+        //   for (column in sheetData[sheet].values[0]) {
+        //     if (!sheetData[sheet].values[0].length === 0) {
+        //       break;
+        //     }
+        //     dominanceData[dominanceDataKeys[sheet][column]].placed[
+        //       sheetData[sheet].data[column].rowData[row].values[
+        //         FIRST_COLUMN
+        //       ].effectiveValue.stringValue
+        //     ] = row;
+        //   }
+        // }
       }
       console.log(JSON.stringify(dominanceData));
     }
@@ -183,8 +180,8 @@ function fetchUnplacedFurs() {
   );
 }
 
-//fetchPlacedTraits();
+fetchPlacedTraits();
 //fetchUnplacedFurs();
 let server = express();
-server.get("/", (req, res) => res.send("I love you, Heidi Spencer!"));
+server.get("/", (req, res) => res.send(JSON.stringify(dominanceData)));
 server.listen(port, () => console.log("app listening on port 3000"));
