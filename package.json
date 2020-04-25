@@ -5,6 +5,7 @@
     "type": "git",
     "url": "https://github.com/rjspencer1989/solo-development"
   },
+  "main": "server.js",
   "license": "mit",
   "dependencies": {
     "express": "^4.17.1",
