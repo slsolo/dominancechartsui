@@ -186,7 +186,6 @@ function fetchUnplacedFurs() {
 fetchPlacedTraits();
 //fetchUnplacedFurs();
 let server = express();
-server.use();
 server.get("/", (req, res) => res.send(JSON.stringify(dominanceData)));
 server.get("/furs", (req, res) => {
   console.log(req.query);
