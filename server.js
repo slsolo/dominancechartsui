@@ -99,13 +99,13 @@ function fetchPlacedTraits() {
         let sheetData = response.data.valueRanges;
         for (sheet in sheetData) {
           console.log(JSON.stringify(sheetData[sheet]));
-          for (column in sheetData[sheet].values[0]) {
-            if (!sheetData[sheet].values[0].length === 0) {
+          for (column in sheetData[sheet].values) {
+            if (!sheetData[sheet].values[column].length === 0) {
               break;
             }
-            console.log(dominanceDataKeys[sheet]);
+            console.log(JSON.stringify(sheetData[sheet].values[column][0]));
             dominanceData[dominanceDataKeys[sheet]].placed[
-              sheetData[sheet].values[0][column]
+              sheetData[sheet].values[column][0]
             ] = column;
           }
         }
