@@ -4,6 +4,7 @@ const express = require("express");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 let port = process.env.PORT || 3000;
 const keys = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+console.log(JSON.stringify(keys));
 let jwtClient = google.auth.fromJSON(keys);
 jwtClient.scopes = SCOPES;
 //authenticate request
@@ -17,12 +18,16 @@ jwtClient.authorize(function (err, _tokens) {
 const spreadsheetId = "10-9WtItK0LWyUSZqnI_6sGngJXtgVsSaSYJd2GN3qqw";
 // names for list of ranges extracted from the spreadsheet
 const dominanceDataKeys = [
-  ["furs"],
-  ["eyes"],
-  ["shades", "tails", "ears", "whiskers", "whiskerShapes"],
-  ["confettiFurs"],
-  ["genesisFurs"],
-  ["genesisEyes"],
+  "furs",
+  "eyes",
+  "shades",
+  "tails",
+  "ears",
+  "whiskers",
+  "whiskerShapes",
+  "confettiFurs",
+  "genesisFurs",
+  "genesisEyes",
 ];
 let dominanceData = {
   furs: {
@@ -92,20 +97,18 @@ function fetchPlacedTraits() {
         console.error(err);
       } else {
         let sheetData = response.data.valueRanges;
-        console.log(JSON.stringify(sheetData));
-        // for (sheet in sheetData) {
-        //   console.log(JSON.stringify(sheetData[sheet]));
-        //   for (column in sheetData[sheet].values[0]) {
-        //     if (!sheetData[sheet].values[0].length === 0) {
-        //       break;
-        //     }
-        //     dominanceData[dominanceDataKeys[sheet][column]].placed[
-        //       sheetData[sheet].data[column].rowData[row].values[
-        //         FIRST_COLUMN
-        //       ].effectiveValue.stringValue
-        //     ] = row;
-        //   }
-        // }
+        for (sheet in sheetData) {
+          console.log(JSON.stringify(sheetData[sheet]));
+          for (column in sheetData[sheet].values[0]) {
+            if (!sheetData[sheet].values[0].length === 0) {
+              break;
+            }
+            console.log(dominanceDataKeys[sheet]);
+            dominanceData[dominanceDataKeys[sheet]].placed[
+              sheetData[sheet].values[0][column]
+            ] = column;
+          }
+        }
       }
       console.log(JSON.stringify(dominanceData));
     }
