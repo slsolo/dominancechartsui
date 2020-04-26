@@ -200,11 +200,5 @@ server.post("/furs", (req, res) => {
   } else {
     res.send(`${first} is recessive to ${second}`);
   }
-  res.send(
-    JSON.stringify([
-      dominanceData["furs"]["placed"][first],
-      dominanceData["furs"]["placed"][second],
-    ])
-  );
 });
 server.listen(port, () => console.log(`app listening on port ${port}`));
