@@ -186,8 +186,10 @@ function fetchUnplacedFurs() {
 fetchPlacedTraits();
 //fetchUnplacedFurs();
 let server = express();
+server.use();
 server.get("/", (req, res) => res.send(JSON.stringify(dominanceData)));
 server.get("/furs", (req, res) => {
+  console.log(req.query);
   let first = req.query.first;
   let second = req.query.second;
   res.send(
@@ -197,4 +199,4 @@ server.get("/furs", (req, res) => {
     ])
   );
 });
-server.listen(port, () => console.log("app listening on port 3000"));
+server.listen(port, () => console.log(`app listening on port ${port}`));
