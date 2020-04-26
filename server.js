@@ -187,16 +187,14 @@ function fetchUnplacedFurs() {
 fetchPlacedTraits();
 //fetchUnplacedFurs();
 let server = express();
-server.use(bodyParser.json());
 server.get("/", (req, res) => res.send(JSON.stringify(dominanceData)));
-server.post("/furs", (req, res) => {
-  console.log(req.body);
-  let first = req.body.first;
-  let second = req.body.second;
+server.get("/furs", (req, res) => {
+  let first = req.query.first;
+  let second = req.query.second;
   res.send(
     JSON.stringify([
-      dominanceData["furs"][first],
-      dominanceData["furs"][second],
+      dominanceData["furs"]["placed"][first],
+      dominanceData["furs"]["placed"][second],
     ])
   );
 });
