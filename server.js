@@ -192,6 +192,14 @@ server.get("/", (req, res) => res.send(JSON.stringify(dominanceData)));
 server.post("/furs", (req, res) => {
   let first = req.body.first;
   let second = req.body.second;
+  let dominant =
+    dominanceData["furs"]["placed"][first] <
+    dominanceData["furs"]["placed"][second];
+  if (dominant) {
+    res.send(`${first} is dominant to ${second}`);
+  } else {
+    res.send(`${first} is recessive to ${second}`);
+  }
   res.send(
     JSON.stringify([
       dominanceData["furs"]["placed"][first],
