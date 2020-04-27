@@ -101,12 +101,12 @@ function fetchPlacedTraits() {
         for (sheet in sheetData) {
           console.log(JSON.stringify(sheetData[sheet]));
           for (column in sheetData[sheet].values) {
-            if (!sheetData[sheet].values[column].length === 0) {
+            if (sheetData[sheet].values[column].length === 0) {
               break;
             }
             let asteriskPos = sheetData[sheet].values[column][0].indexOf("*");
             let retiredPos = sheetData[sheet].values[column][0].indexOf(
-              "Retired"
+              "(Retired)"
             );
             let stringEnd = -1;
             if (asteriskPos >= 0 && retiredPos >= 0) {
