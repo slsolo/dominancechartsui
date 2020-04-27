@@ -104,9 +104,22 @@ function fetchPlacedTraits() {
             if (!sheetData[sheet].values[column].length === 0) {
               break;
             }
+            let asteriskPos = sheetData[sheet].values[column][0].indexOf("*");
+            let retiredPos = sheetData[sheet].values[column][0].indexOf(
+              "Retired"
+            );
+            let stringEnd = -1;
+            if (asteriskPos >= 0 && retiredPos >= 0) {
+              if (asteriskPos < retiredPos) stringEnd = asteriskPos;
+              else stringEnd = retiredPos;
+            } else if (asteriskPos >= 0) {
+              stringEnd = asteriskPos;
+            } else if (retiredPos >= 0) {
+              stringEnd = retiredPos;
+            }
             console.log(JSON.stringify(sheetData[sheet].values[column][0]));
             dominanceData[dominanceDataKeys[sheet]].placed[
-              sheetData[sheet].values[column][0]
+              sheetData[sheet].values[column][0].substring(0, stringEnd)
             ] = column;
           }
         }
