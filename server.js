@@ -202,8 +202,8 @@ server.post("/furs", (req, res) => {
     res.send(`${first} is recessive to ${second}`);
   }
 });
-app.use(express.static(path.join(__dirname, "client/build")));
-app.get("*", (req, res) => {
+server.use(express.static(path.join(__dirname, "client/build")));
+server.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 server.listen(port, () => console.log(`app listening on port ${port}`));
