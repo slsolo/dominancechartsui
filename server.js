@@ -1,5 +1,7 @@
 // eslint-disable-next-line prettier/prettier
-const { google } = require("googleapis");
+const {
+  google
+} = require("googleapis");
 const express = require("express");
 const bodyParser = require("body-parser");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
@@ -76,8 +78,7 @@ const FIRST_COLUMN = 0;
 let sheets = google.sheets("v4");
 
 function fetchPlacedTraits() {
-  sheets.spreadsheets.values.batchGet(
-    {
+  sheets.spreadsheets.values.batchGet({
       auth: jwtClient,
       spreadsheetId: spreadsheetId,
       ranges: [
@@ -104,22 +105,10 @@ function fetchPlacedTraits() {
             if (sheetData[sheet].values[column].length === 0) {
               break;
             }
-            let asteriskPos = sheetData[sheet].values[column][0].indexOf("*");
-            let retiredPos = sheetData[sheet].values[column][0].indexOf(
-              "(Retired)"
-            );
-            let stringEnd = -1;
-            if (asteriskPos >= 0 && retiredPos >= 0) {
-              if (asteriskPos < retiredPos) stringEnd = asteriskPos;
-              else stringEnd = retiredPos;
-            } else if (asteriskPos >= 0) {
-              stringEnd = asteriskPos;
-            } else if (retiredPos >= 0) {
-              stringEnd = retiredPos;
-            }
+
             console.log(JSON.stringify(sheetData[sheet].values[column][0]));
             dominanceData[dominanceDataKeys[sheet]].placed[
-              sheetData[sheet].values[column][0].substring(0, stringEnd)
+              sheetData[sheet].values[column][0]
             ] = column;
           }
         }
@@ -148,8 +137,7 @@ function fetchUnplacedFurs() {
 
   let merges = [];
 
-  sheets.spreadsheets.get(
-    {
+  sheets.spreadsheets.get({
       auth: jwtClient,
       spreadsheetId: spreadsheetId,
       ranges: furRanges,
@@ -170,7 +158,7 @@ function fetchUnplacedFurs() {
                   "values"
                 ) ||
                 sheetData[sheet].data[column].rowData[row].values[FIRST_COLUMN]
-                  .effectiveValue === undefined
+                .effectiveValue === undefined
               ) {
                 continue;
               }
@@ -213,5 +201,9 @@ server.post("/furs", (req, res) => {
   } else {
     res.send(`${first} is recessive to ${second}`);
   }
+});
+app.use(express.static(path.join(__dirname, "client/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 server.listen(port, () => console.log(`app listening on port ${port}`));
