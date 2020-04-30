@@ -190,7 +190,6 @@ fetchPlacedTraits();
 //fetchUnplacedFurs();
 let server = express();
 server.use(bodyParser.json());
-server.get("/", (req, res) => res.send(JSON.stringify(dominanceData)));
 server.post("/furs", (req, res) => {
   let first = req.body.first;
   let second = req.body.second;
