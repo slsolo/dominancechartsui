@@ -9,12 +9,8 @@ const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 let port = process.env.PORT || 3000;
 const keys = JSON.parse(process.env.GOOGLE_CREDENTIALS);
 
-async function auth() {
-  let jwtClient = google.auth.fromJSON(keys);
-  jwtClient.scopes = SCOPES;
-  return jwtClient.authorize();
-}
-
+let jwtClient = google.auth.fromJSON(keys);
+jwtClient.scopes = SCOPES;
 const spreadsheetId = "10-9WtItK0LWyUSZqnI_6sGngJXtgVsSaSYJd2GN3qqw";
 // names for list of ranges extracted from the spreadsheet
 const dominanceDataKeys = [
@@ -74,8 +70,9 @@ let dominanceData = {
 let sheets = google.sheets("v4");
 
 function fetchPlacedTraits() {
-  auth().then((jwtClient) => {
-    sheets.spreadsheets.values.batchGet({
+  jwtClient.authorize().then(() => {
+    sheets.spreadsheets.values
+      .batchGet({
         auth: jwtClient,
         spreadsheetId: spreadsheetId,
         ranges: [
@@ -90,29 +87,27 @@ function fetchPlacedTraits() {
           "Genesis Furs!A12:A",
           "Genesis Eyes!A14:A",
         ],
-      },
-      function (err, response) {
-        if (err) {
-          console.error(err);
-        } else {
-          let sheetData = response.data.valueRanges;
-          for (sheet in sheetData) {
-            console.log(JSON.stringify(sheetData[sheet]));
-            for (column in sheetData[sheet].values) {
-              if (sheetData[sheet].values[column].length === 0) {
-                break;
-              }
-
-              console.log(JSON.stringify(sheetData[sheet].values[column][0]));
-              dominanceData[dominanceDataKeys[sheet]].placed[
-                sheetData[sheet].values[column][0]
-              ] = column;
+      })
+      .then((response) => {
+        let sheetData = response.data.valueRanges;
+        for (sheet in sheetData) {
+          console.log(JSON.stringify(sheetData[sheet]));
+          for (column in sheetData[sheet].values) {
+            if (sheetData[sheet].values[column].length === 0) {
+              break;
             }
+
+            console.log(JSON.stringify(sheetData[sheet].values[column][0]));
+            dominanceData[dominanceDataKeys[sheet]].placed[
+              sheetData[sheet].values[column][0]
+            ] = column;
           }
         }
         console.log(JSON.stringify(dominanceData));
-      }
-    );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
 }
 
