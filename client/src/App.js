@@ -21,11 +21,11 @@ function App() {
           <option>Whisker Shape</option>
         </select>
         <select>
-          {furs.map((k, v) => {
+          {furs.map((k, v) => (
             <option key={k} value={k}>
               {v}
-            </option>;
-          })}
+            </option>
+          ))}
         </select>
       </form>
     </div>
