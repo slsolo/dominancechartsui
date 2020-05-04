@@ -116,7 +116,8 @@ function fetchPlacedTraits() {
   });
 }
 
-setInterval(fetchPlacedTraits, 0.5 * 60 * 1000);
+// setInterval(fetchPlacedTraits, 0.5 * 60 * 1000);
+fetchPlacedTraits();
 
 let server = express();
 server.use(bodyParser.json());
