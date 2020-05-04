@@ -3,12 +3,12 @@ import "./App.css";
 
 function App() {
   const [hasError, setErrors] = useState(false);
-  const [furs, setFurs] = useState({});
+  const [furs, setFurs] = useState([]);
   useEffect(() => {
     fetch("https://solo-development-web.herokuapp.com/furs/")
       .then((res) => res.json)
-      .then((res) => this.setFurs(res))
-      .catch(() => this.setErrors(true));
+      .then((res) => setFurs(res))
+      .catch(() => setErrors(true));
   });
   return (
     <div className="App">
@@ -21,7 +21,7 @@ function App() {
           <option>Whisker Shape</option>
         </select>
         <select>
-          {this.state.furs.map((k, v) => (
+          {furs.map((k, v) => (
             <option key={k} value={k}>
               {v}
             </option>
