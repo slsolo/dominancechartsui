@@ -21,7 +21,7 @@ function App() {
           <option>Whisker Shape</option>
         </select>
         <select>
-          {furs.map((k, v) => (
+          {this.state.furs.map((k, v) => (
             <option key={k} value={k}>
               {v}
             </option>

@@ -6,7 +6,7 @@
     "url": "https://github.com/rjspencer1989/solo-development"
   },
   "main": "server.js",
-  "license": "mit",
+  "license": "MIT",
   "dependencies": {
     "express": "4.17.1",
     "googleapis": "49.0.0",
