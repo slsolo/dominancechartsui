@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
-  const [hasError, setErrors] = useState(false);
   const [furs, setFurs] = useState([]);
   useEffect(() => {
     fetch("https://solo-development-web.herokuapp.com/furs/")
       .then((res) => res.json())
       .then((res) => setFurs(res))
-      .catch(() => setErrors(true));
+      .catch((err) => console.log(err));
   });
   return (
     <div className="App">
@@ -21,7 +20,7 @@ function App() {
           <option>Whisker Shape</option>
         </select>
         <select>
-          {furs.map((k, v) => (
+          {furs.map((v, k) => (
             <option key={k} value={k}>
               {v}
             </option>
