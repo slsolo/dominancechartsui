@@ -6,7 +6,7 @@ function App() {
   const [furs, setFurs] = useState([]);
   useEffect(() => {
     fetch("https://solo-development-web.herokuapp.com/furs/")
-      .then((res) => res.json)
+      .then((res) => res.json())
       .then((res) => setFurs(res))
       .catch(() => setErrors(true));
   });
