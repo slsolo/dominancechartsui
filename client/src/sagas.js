@@ -14,7 +14,7 @@ function* fetchFurs() {
         const furs = yield call(fetch, "https://solo-development-web.herokuapp.com/furs/");
         yield put({
             type: FETCH_FURS_SUCCESS,
-            payload: furs.json()
+            payload: furs
         });
     } catch (err) {
         yield put({
