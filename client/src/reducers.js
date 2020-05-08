@@ -8,7 +8,7 @@ import {
 } from "redux";
 
 const initialstate = {
-    furs = [],
+    furs: [],
     fetching: false
 }
 
