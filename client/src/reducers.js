@@ -26,9 +26,12 @@ function furReducer(state = initialstate, action) {
                     return {
                         ...state, fetching: false, furs: []
                     }
+                    default:
+                        return state;
     }
 }
 
-export default RootReducer = combineReducers({
+let RootReducer = combineReducers({
     furReducer
 });
+export default RootReducer;
