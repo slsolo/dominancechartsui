@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import "./App.css";
 
 function App() {
-  const [furs, setFurs] = useState([]);
-  useEffect(() => {
-    fetch("https://solo-development-web.herokuapp.com/furs/")
-      .then((res) => res.json())
-      .then((res) => setFurs(res))
-      .catch((err) => console.log(err));
-  });
+  const furs = useSelector((state) => state.furs);
   return (
     <div className="App">
       <form>

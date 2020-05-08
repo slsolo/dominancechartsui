@@ -117,7 +117,7 @@ fetchPlacedTraits();
 let server = express();
 server.use(bodyParser.json());
 server.get("/furs", (req, res) => {
-  res.json(Object.keys(dominanceData['furs']['placed']).sort());
+  res.json(Object.keys(dominanceData["furs"]["placed"]).sort());
 });
 server.post("/furs", (req, res) => {
   let first = req.body.first;
