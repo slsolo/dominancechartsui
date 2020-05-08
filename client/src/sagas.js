@@ -3,8 +3,13 @@ import {
     FETCH_FURS_SUCCESS,
     ERROR
 } from './actions';
+import {
+    call,
+    put,
+    takeLatest
+} from 'redux-saga/effects';
 
-function* fetchFurs(action) {
+function* fetchFurs() {
     try {
         const furs = yield call(fetch, "https://solo-development-web.herokuapp.com/furs/");
         yield put({
@@ -20,7 +25,7 @@ function* fetchFurs(action) {
 }
 
 function* mySaga() {
-    yield takeLatest("FETCH_FURS", fetchFurs);
+    yield takeLatest(FETCH_FURS, fetchFurs);
 }
 
 export default mySaga;
