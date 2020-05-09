@@ -1,10 +1,9 @@
 // eslint-disable-next-line prettier/prettier
-const {
-  google
-} = require("googleapis");
+const { google } = require("googleapis");
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
+const cors = require("cors");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 let port = process.env.PORT || 3000;
 const keys = JSON.parse(process.env.GOOGLE_CREDENTIALS);
@@ -115,6 +114,7 @@ function fetchPlacedTraits() {
 fetchPlacedTraits();
 
 let server = express();
+server.use(cors());
 server.use(bodyParser.json());
 server.get("/furs", (req, res) => {
   res.json(Object.keys(dominanceData["furs"]["placed"]).sort());
