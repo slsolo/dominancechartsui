@@ -144,7 +144,7 @@ server.post("/furs", (req, res) => {
   } else if (firstGenesis) {
     res.send(`${first} is dominant to ${second}`);
   } else if (secondGenesis) {
-    res.send(`${first} is dominant to ${second}`);
+    res.send(`${first} is recessive to ${second}`);
   } else {
     dominant =
       dominanceData["furs"]["placed"][first] <
