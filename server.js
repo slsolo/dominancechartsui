@@ -129,8 +129,8 @@ server.get("/furs", (req, res) => {
 server.post("/furs", (req, res) => {
   let first = req.body.first;
   let second = req.body.second;
-  let firstGenesis = first.indexOf("genesis") >= 0;
-  let secondGenesis = second.indexOf("genesis") >= 0;
+  let firstGenesis = first.startsWith("Genesis");
+  let secondGenesis = second.startsWith("Genesis");
   let dominant = false;
   if (firstGenesis & secondGenesis) {
     dominant =
