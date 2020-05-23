@@ -1,5 +1,7 @@
 // eslint-disable-next-line prettier/prettier
-const { google } = require("googleapis");
+const {
+  google
+} = require("googleapis");
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -117,18 +119,41 @@ let server = express();
 server.use(cors());
 server.use(bodyParser.json());
 server.get("/furs", (req, res) => {
-  res.json(Object.keys(dominanceData["furs"]["placed"]).sort());
+  res.json(
+    Object.keys({
+      ...dominanceData["furs"]["placed"],
+      ...dominanceData["genesisFurs"]["placed"]
+    }).sort()
+  );
 });
 server.post("/furs", (req, res) => {
   let first = req.body.first;
   let second = req.body.second;
-  let dominant =
-    dominanceData["furs"]["placed"][first] <
-    dominanceData["furs"]["placed"][second];
-  if (dominant) {
+  let firstGenesis = first.indexOf("genesis") >= 0;
+  let secondGenesis = second.indexOf("genesis") >= 0;
+  let dominant = false;
+  if (firstGenesis & secondGenesis) {
+    dominant =
+      dominanceData["genesisFurs"]["placed"][first] <
+      dominanceData["genesisFurs"]["placed"][second];
+    if (dominant) {
+      res.send(`${first} is dominant to ${second}`);
+    } else {
+      res.send(`${first} is recessive to ${second}`);
+    }
+  } else if (firstGenesis) {
+    res.send(`${first} is dominant to ${second}`);
+  } else if (secondGenesis) {
     res.send(`${first} is dominant to ${second}`);
   } else {
-    res.send(`${first} is recessive to ${second}`);
+    dominant =
+      dominanceData["furs"]["placed"][first] <
+      dominanceData["furs"]["placed"][second];
+    if (dominant) {
+      res.send(`${first} is dominant to ${second}`);
+    } else {
+      res.send(`${first} is recessive to ${second}`);
+    }
   }
 });
 server.use(express.static(path.join(__dirname, "client/build")));
