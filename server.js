@@ -1,5 +1,7 @@
 // eslint-disable-next-line prettier/prettier
-const { google } = require("googleapis");
+const {
+  google
+} = require("googleapis");
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -123,7 +125,7 @@ server.use(bodyParser.json());
 server.get("/furs", (req, res) => {
   res.json(Object.keys(dominanceData["furs"]).sort());
 });
-server.get("/furs/:breed", req, (res) => {
+server.get("/furs/:breed", (req, res) => {
   if (dominanceData["furs"].hasOwnProperty(req.params.breed)) {
     res.json(Object.keys(dominanceData[furs][req.params.breed].sort()));
   } else {
