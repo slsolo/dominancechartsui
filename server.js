@@ -1,7 +1,5 @@
 // eslint-disable-next-line prettier/prettier
-const {
-  google
-} = require("googleapis");
+const { google } = require("googleapis");
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -23,17 +21,12 @@ const dominanceDataKeys = [
   "whiskers",
   "whiskerShapes",
   "confettiFurs",
-  "genesisFurs",
+  "furs",
   "genesisEyes",
 ];
 let dominanceData = {
   furs: {
-    placed: {},
-    unplaced: {},
-  },
-  genesisFurs: {
-    placed: {},
-    unplaced: {},
+    breeds: {},
   },
   eyes: {
     placed: {},
@@ -99,9 +92,18 @@ function fetchPlacedTraits() {
             }
 
             console.log(JSON.stringify(sheetData[sheet].values[column][0]));
-            dominanceData[dominanceDataKeys[sheet]].placed[
-              sheetData[sheet].values[column][0]
-            ] = column;
+            if (dominanceDataKeys[sheet] === "furs") {
+              dominanceData[dominanceDataKeys[sheet]].breeds[
+                sheetData[sheet].values[column][0].substring(
+                  0,
+                  sheetData[sheet].values[column][0].indexOf("-")
+                )
+              ].placed[sheetData[sheet].values[column][0]] = column;
+            } else {
+              dominanceData[dominanceDataKeys[sheet]].placed[
+                sheetData[sheet].values[column][0]
+              ] = column;
+            }
           }
         }
         console.log(JSON.stringify(dominanceData));
@@ -119,12 +121,14 @@ let server = express();
 server.use(cors());
 server.use(bodyParser.json());
 server.get("/furs", (req, res) => {
-  res.json(
-    Object.keys({
-      ...dominanceData["furs"]["placed"],
-      ...dominanceData["genesisFurs"]["placed"]
-    }).sort()
-  );
+  res.json(Object.keys(dominanceData["furs"]).sort());
+});
+server.get("/furs/:breed", req, (res) => {
+  if (dominanceData["furs"].hasOwnProperty(req.params.breed)) {
+    res.json(Object.keys(dominanceData[furs][req.params.breed].sort()));
+  } else {
+    res.status(404).send("Breed not found");
+  }
 });
 server.post("/furs", (req, res) => {
   let first = req.body.first;
