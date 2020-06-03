@@ -28,7 +28,8 @@ const dominanceDataKeys = [
 ];
 let dominanceData = {
   furs: {
-    breeds: {},
+    placed: {},
+    unplaced: {}
   },
   eyes: {
     placed: {},
@@ -94,18 +95,9 @@ function fetchPlacedTraits() {
             }
 
             console.log(JSON.stringify(sheetData[sheet].values[column][0]));
-            if (dominanceDataKeys[sheet] === "furs") {
-              dominanceData[dominanceDataKeys[sheet]].breeds[
-                sheetData[sheet].values[column][0].substring(
-                  0,
-                  sheetData[sheet].values[column][0].indexOf("-")
-                )
-              ].placed[sheetData[sheet].values[column][0]] = column;
-            } else {
-              dominanceData[dominanceDataKeys[sheet]].placed[
-                sheetData[sheet].values[column][0]
-              ] = column;
-            }
+            dominanceData[dominanceDataKeys[sheet]].placed[
+              sheetData[sheet].values[column][0]
+            ] = column;
           }
         }
         console.log(JSON.stringify(dominanceData));
@@ -167,3 +159,5 @@ server.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 server.listen(port, () => console.log(`app listening on port ${port}`));
+module.exports.fetchPlacedTraits = fetchPlacedTraits;
+module.exports.dominanceData = dominanceData;
