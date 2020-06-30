@@ -1,3 +1,17 @@
 language: node_js
 node_js:
   - 12
+env:
+  global:
+    - GOOGLE_CREDENTIALS: {
+  "type": "service_account",
+  "project_id": "solodevelopment",
+  "private_key_id": "dfcaa139efce9762bee503e0f4bc0fbb715a6b28",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCgs5jQ3JU7SMjv\n+/g5pKunOTsHYwaNKzFdJzm99+kLWkjosdRVWj+7T9mRQ8xQjs+HH7/L1AaiRZrY\nJqIIMhUeKElH7ByJlCSm+Fkn17Dh9gAex8BRt5jgL6FQDJl3bn1hoMzZ1KL1W41w\neRaMz3bfXgNXVpCCsky0zxHR8QvkelIJirRZghPGnXNeDydrocIMyNCPnW6KKJ+C\nk8XYBjxROJaokWRlTmUK+QEwoExGikV1bEaAl2cJGTunKhg/Cr2ItrXYbz+1mhoO\nylNYO00E8TJaEuKM6bWiGAtLMFnflUwvksA51Q6nc9cEoZh67YscMO7Ne+WKAMHT\nXrBUoBl7AgMBAAECggEADUwUbYKLFfQ7AuHlE2lPoM8oq2mjaE6gz4tIM7K4mwK1\n/LcrkYJzD+iWtqFBszrAlkw8vmdwGGuiWUIHxJ4sRtS2N5gkcQfhPoWsjueXOyNJ\nYEKkDxRI4egJtN94sBFkQ430Krl1tdAFCepNwN9b1TYTbbMmfay2PHx+hid9a0LI\nQTIZtJE3XteqnhTMNq+ahSMZOvRUdA4rihq7kIuHbnMteBFBoWwk+m2SH01I9dH7\nGi1bFfT4VjEz0EbIc/wOH2/eVu8I2W/qb7LmRKXNANmnGB2YQ74SLwdlYu++nxWg\nTKzWbm2ANxoTDFEAKZ6Vqh2VWxpM2fOxuB218PoSlQKBgQDS12mKeXHPVUtfzAfP\n/B1yR1MAYREpw8YActFvjMOZAULW+eHPPSZn1PmVS76wytmk7xyqOBpY1NB/1gry\nO/8EyiOCZZ2Kl0qUTIuRsVcorvdySpV3cY5dyhh765FUi6ZBOwHW2jsO8QlHIS3L\n7nletc+PeIQY6eBM+KM2MiE6HwKBgQDDHvpW/3vpdGk1zNR6GkasDx9TsT9rMRe2\nvTIR6INOTMq5AbKwYyco5/wLMeW1vdCrR9NY3xQnXb8XWI5oCv/6QugfYvylNfD8\nq3eeqzETXYmGMdckd9Qy1gMEoT3fT1/X6te34RiCTt42zf59F55bHkpMB+bYlK0+\n4Zq4VHztJQKBgAmehlQpAkZBT/UI6/pTOEy0cFb+FrhfFDOFCYUbWPksE46XS/QW\niCAImXJ0SDjsqE1cE2S4tosC+pg6fblbf2EKj+AtHqjqCh8F9wAopR9YDDYMrREL\n/0DMLZ3Ju5Gt5WHofUb+Id+mo5O5McuyD5uAk/2ps+0nDnK0jU21r8plAoGAVDAo\niaMAXvFYd9siDnEJ7zEzLhQ7Lc/n0HP/h5SQGxetHHgsFkkh21eE+3uTBoCY6V47\nRYwzEO01ByixgRjF68A0kV5PbiVBDnQZT7/Dk/x22wzkLBr71tdaRAQiQxjnXK06\nWF9qCMdov7LPzD+FlwERw45hPy+fNJN5A3GI2XUCgYBYVkEC+Xvh3N9VO/1ltOSW\nAUIEZC9HfZbC4JKyCKtk0OtVnV3VZ8UUg3OQr+Co+D6529wyEwFxLfKu+ZLpMXMO\n0TgV991LWzU2mUimkIwgBLoKo8LP0LLlJfFRXyxDs2iUi1GGjkahnk5G8DCgi1aC\nwhqlCFNpNBivOqfrndYHyQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "dominancecharts@solodevelopment.iam.gserviceaccount.com",
+  "client_id": "109177574099111503540",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dominancecharts%40solodevelopment.iam.gserviceaccount.com"
+}

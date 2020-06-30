@@ -3,7 +3,9 @@ import {
     FETCH_FURS_SUCCESS,
     ERROR,
     COMPARE_FURS,
-    COMPARE_FURS_SUCCESS
+    COMPARE_FURS_SUCCESS,
+    FETCH_EYES,
+    FETCH_EYES_SUCCESS
 } from "./actions";
 import {
     combineReducers
@@ -11,10 +13,11 @@ import {
 
 const initialstate = {
     furs: [],
+    eyes: [],
     fetching: false,
     err: "",
     comparison: "",
-    comparisonFurs: {
+    comparisonItems: {
         first: "",
         second: ""
     }
@@ -36,17 +39,25 @@ function furReducer(state = initialstate, action) {
                     }
                     case COMPARE_FURS:
                         return {
-                            ...state, fetching: true, comparisonFurs: action.payload, comparison: ""
+                            ...state, fetching: true, comparisonItems: action.payload, comparison: ""
                         }
                         case COMPARE_FURS_SUCCESS:
                             return {
-                                ...state, fetching: false, comparisonFurs: {
+                                ...state, fetching: false, comparisonItems: {
                                     first: "",
                                     second: ""
                                 }, comparison: action.payload
                             }
-                            default:
-                                return state;
+                            case FETCH_EYES:
+                                return {
+                                    ...state, fetching: true
+                                }
+                                case FETCH_EYES_SUCCESS:
+                                    return {
+                                        ...state, eyes: action.payload, fetching: false
+                                    }
+                                    default:
+                                        return state;
     }
 }
 

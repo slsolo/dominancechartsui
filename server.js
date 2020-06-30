@@ -1,7 +1,5 @@
 // eslint-disable-next-line prettier/prettier
-const {
-  google
-} = require("googleapis");
+const { google } = require("googleapis");
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -29,7 +27,7 @@ const dominanceDataKeys = [
 let dominanceData = {
   furs: {
     placed: {},
-    unplaced: {}
+    unplaced: {},
   },
   eyes: {
     placed: {},
@@ -66,7 +64,7 @@ let dominanceData = {
 };
 let sheets = google.sheets("v4");
 
-function fetchPlacedTraits() {
+async function fetchPlacedTraits() {
   jwtClient.authorize().then(() => {
     sheets.spreadsheets.values
       .batchGet({
@@ -88,41 +86,32 @@ function fetchPlacedTraits() {
       .then((response) => {
         let sheetData = response.data.valueRanges;
         for (sheet in sheetData) {
-          console.log(JSON.stringify(sheetData[sheet]));
           for (column in sheetData[sheet].values) {
             if (sheetData[sheet].values[column].length === 0) {
               break;
             }
 
-            console.log(JSON.stringify(sheetData[sheet].values[column][0]));
             dominanceData[dominanceDataKeys[sheet]].placed[
               sheetData[sheet].values[column][0]
             ] = column;
           }
         }
-        console.log(JSON.stringify(dominanceData));
+        return dominanceData;
       })
       .catch((err) => {
-        console.log(err);
+        return {};
       });
   });
 }
 
 // setInterval(fetchPlacedTraits, 0.5 * 60 * 1000);
-fetchPlacedTraits();
+dominanceData = fetchPlacedTraits();
 
 let server = express();
 server.use(cors());
 server.use(bodyParser.json());
 server.get("/furs", (req, res) => {
   res.json(Object.keys(dominanceData["furs"]).sort());
-});
-server.get("/furs/:breed", (req, res) => {
-  if (dominanceData["furs"].hasOwnProperty(req.params.breed)) {
-    res.json(Object.keys(dominanceData[furs][req.params.breed].sort()));
-  } else {
-    res.status(404).send("Breed not found");
-  }
 });
 server.post("/furs", (req, res) => {
   let first = req.body.first;
@@ -154,10 +143,42 @@ server.post("/furs", (req, res) => {
     }
   }
 });
+server.get("/eyes", (req, res) => {
+  res.json(Object.keys(dominanceData["eyes"]).sort());
+});
+server.post("/eyes", (req, res) => {
+  let first = req.body.first;
+  let second = req.body.second;
+  let firstGenesis = first.startsWith("Genesis");
+  let secondGenesis = second.startsWith("Genesis");
+  let dominant = false;
+  if (firstGenesis & secondGenesis) {
+    dominant =
+      dominanceData["genesisEyes"]["placed"][first] <
+      dominanceData["genesisEyes"]["placed"][second];
+    if (dominant) {
+      res.send(`${first} is dominant to ${second}`);
+    } else {
+      res.send(`${first} is recessive to ${second}`);
+    }
+  } else if (firstGenesis) {
+    res.send(`${first} is dominant to ${second}`);
+  } else if (secondGenesis) {
+    res.send(`${first} is recessive to ${second}`);
+  } else {
+    dominant =
+      dominanceData["eyes"]["placed"][first] <
+      dominanceData["eyes"]["placed"][second];
+    if (dominant) {
+      res.send(`${first} is dominant to ${second}`);
+    } else {
+      res.send(`${first} is recessive to ${second}`);
+    }
+  }
+});
 server.use(express.static(path.join(__dirname, "client/build")));
 server.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 server.listen(port, () => console.log(`app listening on port ${port}`));
 module.exports.fetchPlacedTraits = fetchPlacedTraits;
-module.exports.dominanceData = dominanceData;
