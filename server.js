@@ -111,7 +111,7 @@ let server = express();
 server.use(cors());
 server.use(bodyParser.json());
 server.get("/furs", (req, res) => {
-  res.json(Object.keys(dominanceData["furs"].placed).sort());
+  res.json(Object.keys(dominanceData.furs.placed).sort());
 });
 server.post("/furs", (req, res) => {
   let first = req.body.first;
@@ -144,7 +144,7 @@ server.post("/furs", (req, res) => {
   }
 });
 server.get("/eyes", (req, res) => {
-  res.json(Object.keys(dominanceData["eyes"].placed).sort());
+  res.json(Object.keys(dominanceDataeyes.placed).sort());
 });
 server.post("/eyes", (req, res) => {
   let first = req.body.first;
