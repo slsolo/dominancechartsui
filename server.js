@@ -6,7 +6,7 @@ const path = require("path");
 const cors = require("cors");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 let port = process.env.PORT || 3000;
-const keys = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+const keys = require("./credentials.json");
 
 let jwtClient = google.auth.fromJSON(keys);
 jwtClient.scopes = SCOPES;
@@ -85,6 +85,7 @@ async function fetchPlacedTraits() {
       })
       .then((response) => {
         let sheetData = response.data.valueRanges;
+        console.log(JSON.stringify(sheetData));
         for (sheet in sheetData) {
           for (column in sheetData[sheet].values) {
             if (sheetData[sheet].values[column].length === 0) {
