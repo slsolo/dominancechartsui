@@ -4,3 +4,8 @@ node_js:
 before_install:
   - openssl aes-256-cbc -K $encrypted_749dcc9e92f7_key -iv $encrypted_749dcc9e92f7_iv
     -in credentials.json.enc -out credentials.json -d
+deploy:
+  provider: heroku
+  api_key:
+    secure: OzQp3UTvI6dQzcWfTyqIsCclM1mI66HUVTBnKvjPGELecHfjX+x5Abv0HZEiJaFY1c/t4O3L2oePKeN+MZgoK1sf4izOgbW5yZGvu4tVmj8bHeYCKaFCfdF0LTYs10+Vm3kvEmGW+sl3frLM9xXx3w3BZysOZ+PU95PvlMzDpDowQJSI5ceaCKoqGwn1qP/NnoI0Y4nqJyiwrA/24Oi3eaprbXxeImOoF1aavP0LD0tXegVLHrsPk62pt6GGWAiyYu5thZ9RCLEkQlkxaUv3LQw0fctVj5eCrw0jN7Wpk19qnUDOV5YCmhFNjMfWOkbGHaO8yQq0+9Jx8a/fk4Y8pVjW1J2winzXgDesXrj75H0UoV+xJbkdMIUoWbkkjDim1Dsm2CaI92vc3gLKF4i4N4pbbsraenw1e+mAW8Z4ufQ8Qfu5cfifdb4b75dfHvJP++wAnKnvimd7X4TSEHGucTKzdgcR2n1NbwbooAuqRpNdQJRSTiGrvowF3NvxOWperZbQjXdC+ru9XP8vnpG0TZR7DcM4UA9BxQU92bYgx2ip3eahrIQX05v5Ywi0ps3Y36KzFMSvT/r4hrtvSle9gOfhWC34D7tChrEkUHOH6Xejyr0wAdxGvvvYk39AIlfxLfJ+QYlF6o7mQLV2TVXIihYnLWbGskW6d3IYoorQZDk=
+  app: solo-development-web
