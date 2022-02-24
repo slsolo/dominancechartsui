@@ -8,7 +8,7 @@ const second = ref("");
 const result = ref("");
 function fetchCompare() {
   loading.value = true;
-  return fetch(`/api/furs/compare/${first.value}/${second.value}`, {
+  return fetch(`${import.meta.env.VITE_API_HOST}/api/furs/compare/${first.value}/${second.value}`, {
     method: 'get'
   }).then(res => {
     if(!res.ok) {
@@ -24,7 +24,7 @@ function fetchCompare() {
 }
 function fetchFurNames() {
   loading.value = true;
-  return fetch("/api/furs/names", {
+  return fetch(`${import.meta.env.VITE_API_HOST}/api/furs/names`, {
     method: 'get'
   }).then(res => {
     if(!res.ok) {
