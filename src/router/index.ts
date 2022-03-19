@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/Furs.vue";
+import EyesView from "../views/Eyes.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +7,18 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: HomeView,
+      component: EyesView,
+      props: {
+        trait: "Fur"
+      }
+    },
+    {
+      path: "/eyes",
+      name: "Eyes",
+      component: EyesView,
+      props: {
+        trait: "Eyes"
+      }
     },
   ],
 });

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { defineProps, reactive, ref, onMounted, toRefs } from "vue";
 const furs = ref(null);
 const loading = ref(true);
 const error = ref(null);
@@ -8,7 +8,7 @@ const second = ref("");
 const result = ref("");
 function fetchCompare() {
   loading.value = true;
-  return fetch(`${import.meta.env.VITE_API_HOST}api/Fur/compare/${first.value}/${second.value}`, {
+  return fetch(`${import.meta.env.VITE_API_HOST}api/${trait.value}/compare/${first.value}/${second.value}`, {
     method: 'get'
   }).then(res => {
     if (!res.ok) {
@@ -24,7 +24,7 @@ function fetchCompare() {
 }
 function fetchFurNames() {
   loading.value = true;
-  return fetch(`${import.meta.env.VITE_API_HOST}api/Fur/names`, {
+  return fetch(`${import.meta.env.VITE_API_HOST}api/${trait.value}/names`, {
     method: 'get'
   }).then(res => {
     if (!res.ok) {
@@ -41,11 +41,18 @@ function fetchFurNames() {
 onMounted(() => {
   fetchFurNames();
 });
+
+const props = defineProps({
+  trait: String,
+});
+
+const { trait } = toRefs(props);
+
 </script>
 
 <template>
   <main>
-    <h1>Furs</h1>
+    <h1>Eyes</h1>
     <p>first</p>
     <select v-model="first" v-if="!loading && furs">
       <option v-for="(item, key) in furs" :key="key" :value="item">{{ item }}</option>
