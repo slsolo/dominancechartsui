@@ -8,7 +8,7 @@ const second = ref("");
 const result = ref("");
 function fetchCompare() {
   loading.value = true;
-  return fetch(`${import.meta.env.VITE_API_HOST}api/Eyes/compare/${first.value}/${second.value}`, {
+  return fetch(`${import.meta.env.VITE_API_HOST}api/Tails/compare/${first.value}/${second.value}`, {
     method: 'get'
   }).then(res => {
     if (!res.ok) {
@@ -24,7 +24,7 @@ function fetchCompare() {
 }
 function fetchFurNames() {
   loading.value = true;
-  return fetch(`${import.meta.env.VITE_API_HOST}api/Eyes/names`, {
+  return fetch(`${import.meta.env.VITE_API_HOST}api/Tails/names`, {
     method: 'get'
   }).then(res => {
     if (!res.ok) {
@@ -46,7 +46,7 @@ onMounted(() => {
 
 <template>
   <main>
-    <h1>Eyes</h1>
+    <h1>Tails</h1>
     <p>first</p>
     <select v-model="first" v-if="!loading && furs">
       <option v-for="(item, key) in furs" :key="key" :value="item">{{ item }}</option>
