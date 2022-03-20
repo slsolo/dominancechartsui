@@ -50,6 +50,6 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
   env: {
-    apiHost: process.env.API_HOST || "http://localhost:8080/"
-  }
+    apiHost: process.env.API_HOST || 'http://localhost:8080/',
+  },
 }

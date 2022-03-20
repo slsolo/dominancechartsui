@@ -1,37 +1,37 @@
 <script>
-export default ({
-  name: "Eyes View",
+export default {
+  name: 'EyesView',
   data() {
-
     return {
       eyes: [],
       loading: false,
-      first: "",
-      second: "",
-      result: "",
-      error: ""
+      first: '',
+      second: '',
+      result: '',
+      error: '',
     }
   },
   async fetch() {
     this.eyes = await fetch(`${apiHost}api/Eyes/names`, {
-      method: 'get'
-    }).then(res => res.json())
+      method: 'get',
+    }).then((res) => res.json())
   },
   methods: {
     async fetchCompare() {
-      this.loading = true;
+      this.loading = true
       try {
-        const ey = await this.$axios.$get(`${apiHost}api/Eyes/compare/${this.first}/${this.second}`);
-        this.result = ey;
+        const ey = await this.$axios.$get(
+          `${apiHost}api/Eyes/compare/${this.first}/${this.second}`
+        )
+        this.result = ey
       } catch (e) {
-        this.error = e;
+        this.error = e
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
   },
-});
-
+}
 </script>
 
 <template>

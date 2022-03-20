@@ -1,36 +1,37 @@
 <script>
-export default ({
-  name: "Tails View",
+export default {
+  name: 'TailsView',
   data() {
-
     return {
       tails: [],
       loading: false,
-      first: "",
-      second: "",
-      result: "",
-      error: ""
+      first: '',
+      second: '',
+      result: '',
+      error: '',
     }
   },
   async fetch() {
     this.tails = await fetch(`${apiHost}api/Tails/names`, {
-      method: 'get'
-    }).then(res => res.json())
+      method: 'get',
+    }).then((res) => res.json())
   },
   methods: {
     async fetchCompare() {
-      this.loading = true;
+      this.loading = true
       try {
-        const ey = await this.$axios.$get(`${apiHost}api/Tails/compare/${this.first}/${this.second}`);
-        this.result = ey;
+        const ey = await this.$axios.$get(
+          `${apiHost}api/Tails/compare/${this.first}/${this.second}`
+        )
+        this.result = ey
       } catch (e) {
-        this.error = e;
+        this.error = e
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
   },
-});
+}
 </script>
 
 <template>
