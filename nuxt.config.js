@@ -52,4 +52,7 @@ export default {
   env: {
     apiHost: process.env.API_HOST || 'http://localhost:8080/',
   },
+  publicRuntimeConfig: {
+    apiHost: process.env.API_HOST
+  }
 }
