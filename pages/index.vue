@@ -1,6 +1,6 @@
 <script>
 export default ({
-  name: "Home",
+  name: "Home View",
   data() {
     return {
       furs: [],
@@ -10,6 +10,11 @@ export default ({
       result: "",
       error: ""
     }
+  },
+  async fetch() {
+    this.furs = await fetch(`${apiHost}api/Fur/names`, {
+      method: 'get'
+    }).then(res => res.json())
   },
   methods: {
     async fetchCompare() {
@@ -25,11 +30,6 @@ export default ({
     },
 
   },
-  async fetch() {
-    this.furs = await fetch(`${apiHost}api/Fur/names`, {
-      method: 'get'
-    }).then(res => res.json())
-  }
 });
 </script>
 

@@ -1,6 +1,6 @@
 <script>
 export default ({
-  name: "Tails",
+  name: "Tails View",
   data() {
 
     return {
@@ -11,6 +11,11 @@ export default ({
       result: "",
       error: ""
     }
+  },
+  async fetch() {
+    this.tails = await fetch(`${apiHost}api/Tails/names`, {
+      method: 'get'
+    }).then(res => res.json())
   },
   methods: {
     async fetchCompare() {
@@ -25,11 +30,6 @@ export default ({
       }
     },
   },
-  async fetch() {
-    this.tails = await fetch(`${apiHost}api/Tails/names`, {
-      method: 'get'
-    }).then(res => res.json())
-  }
 });
 </script>
 

@@ -1,6 +1,6 @@
 <script>
 export default ({
-  name: "Eyes",
+  name: "Eyes View",
   data() {
 
     return {
@@ -11,6 +11,11 @@ export default ({
       result: "",
       error: ""
     }
+  },
+  async fetch() {
+    this.eyes = await fetch(`${apiHost}api/Eyes/names`, {
+      method: 'get'
+    }).then(res => res.json())
   },
   methods: {
     async fetchCompare() {
@@ -25,11 +30,6 @@ export default ({
       }
     },
   },
-  async fetch() {
-    this.eyes = await fetch(`${apiHost}api/Eyes/names`, {
-      method: 'get'
-    }).then(res => res.json())
-  }
 });
 
 </script>
