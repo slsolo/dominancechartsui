@@ -11,13 +11,13 @@ export default {
       error: '',
     }
   },
-  async fetch() {
+  async fetch({ $config: { apiHost } }) {
     this.eyes = await fetch(`${apiHost}api/Eyes/names`, {
       method: 'get',
     }).then((res) => res.json())
   },
   methods: {
-    async fetchCompare() {
+    async fetchCompare({ $config: { apiHost } }) {
       this.loading = true
       try {
         const ey = await this.$axios.$get(
