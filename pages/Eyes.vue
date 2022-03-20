@@ -17,11 +17,11 @@ export default {
     }).then((res) => res.json())
   },
   methods: {
-    async fetchCompare({ $config: { apiHost } }) {
+    async fetchCompare() {
       this.loading = true
       try {
         const ey = await this.$axios.$get(
-          `${apiHost}api/Eyes/compare/${this.first}/${this.second}`
+          `${this.$config.apiHost}api/Eyes/compare/${this.first}/${this.second}`
         )
         this.result = ey
       } catch (e) {
