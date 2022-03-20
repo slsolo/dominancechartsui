@@ -11,8 +11,8 @@ export default {
       error: '',
     }
   },
-  async fetch({ $config: { apiHost } }) {
-    this.furs = await fetch(`${apiHost}api/Fur/names`, {
+  async fetch() {
+    this.furs = await fetch(`${this.$config.apiHost}api/Fur/names`, {
       method: 'get',
     }).then((res) => res.json())
   },

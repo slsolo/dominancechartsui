@@ -11,8 +11,8 @@ export default {
       error: '',
     }
   },
-  async fetch({ $config: { apiHost } }) {
-    this.tails = await fetch(`${apiHost}api/Tails/names`, {
+  async fetch() {
+    this.tails = await fetch(`${this.$config.apiHost}api/Tails/names`, {
       method: 'get',
     }).then((res) => res.json())
   },

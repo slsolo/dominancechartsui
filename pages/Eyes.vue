@@ -11,8 +11,8 @@ export default {
       error: '',
     }
   },
-  async fetch({ $config: { apiHost } }) {
-    this.eyes = await fetch(`${apiHost}api/Eyes/names`, {
+  async fetch() {
+    this.eyes = await fetch(`${this.$config.apiHost}api/Eyes/names`, {
       method: 'get',
     }).then((res) => res.json())
   },
