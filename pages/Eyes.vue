@@ -16,7 +16,7 @@ export default ({
     async fetchCompare() {
       this.loading = true;
       try {
-        const ey = await this.$axios.$get(`${process.env.API_HOST}api/Eyes/compare/${this.first}/${this.second}`);
+        const ey = await this.$axios.$get(`${apiHost}api/Eyes/compare/${this.first}/${this.second}`);
         this.result = ey;
       } catch (e) {
         this.error = e;
@@ -26,7 +26,7 @@ export default ({
     },
   },
   async fetch() {
-    this.eyes = await fetch(`${process.env.API_HOST}api/Eyes/names`, {
+    this.eyes = await fetch(`${apiHost}api/Eyes/names`, {
       method: 'get'
     }).then(res => res.json())
   }

@@ -15,7 +15,7 @@ export default ({
     async fetchCompare() {
       this.loading = true;
       try {
-        const ey = await this.$axios.$get(`${process.env.API_HOST}api/Fur/compare/${this.first}/${this.second}`);
+        const ey = await this.$axios.$get(`${apiHost}api/Fur/compare/${this.first}/${this.second}`);
         this.result = ey;
       } catch (e) {
         this.error = e;
@@ -26,7 +26,7 @@ export default ({
 
   },
   async fetch() {
-    this.furs = await fetch(`${process.env.API_HOST}api/Fur/names`, {
+    this.furs = await fetch(`${apiHost}api/Fur/names`, {
       method: 'get'
     }).then(res => res.json())
   }
