@@ -12,4 +12,10 @@ module.exports = {
   plugins: [],
   // add your custom rules here
   rules: {},
+  overrides: [{
+    files: ['layouts/default.vue'],
+    rules: {
+      'vue/multi-word-component-names': 'off'
+    }
+  }]
 }
