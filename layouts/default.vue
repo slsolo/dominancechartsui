@@ -11,6 +11,9 @@
         <li class="item">
           <nuxt-link to="/tails">Tails</nuxt-link>
         </li>
+        <li class="item">
+          <nuxt-link to="/ears">Ears</nuxt-link>
+        </li>
       </ul>
     </nav>
     <Nuxt />
