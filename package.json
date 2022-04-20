@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
-    "start": "node .output/server/index.mjs"
+    "start": "node .output/server/index.mjs --port=$PORT"
   },
   "devDependencies": {
     "@nuxt/ui": "npm:@nuxt/ui-edge@0.0.0-27479051.598a8a0",
