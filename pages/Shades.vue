@@ -1,5 +1,5 @@
 <script setup>
-const config = useRuntimeConfig().public;
+const config = useRuntimeConfig();
 const { pending, error, data: shades } = await useFetch(`${config.apiHost}api/v1/Other`);
 
 </script>

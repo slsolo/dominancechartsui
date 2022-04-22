@@ -1,5 +1,5 @@
 <script setup>
-const config = useRuntimeConfig().public;
+const config = useRuntimeConfig();
 const { pending, error, data: whiskerShapes } = await useFetch(`${config.apiHost}api/v1/Whisker%20Shape`);
 
 </script>

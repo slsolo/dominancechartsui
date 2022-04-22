@@ -1,5 +1,5 @@
 <script setup>
-const config = useRuntimeConfig().public;
+const config = useRuntimeConfig();
 const { pending, error, data: tails } = await useFetch(`${config.apiHost}api/v1/Tails`);
 
 </script>
