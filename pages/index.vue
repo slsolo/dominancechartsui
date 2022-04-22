@@ -9,3 +9,8 @@
     </p>
   </div>
 </template>
+ <style scoped>
+nuxt-link {
+  color: black;
+}
+</style>
