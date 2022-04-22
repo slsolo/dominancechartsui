@@ -12,5 +12,6 @@
  <style scoped>
 a {
   color: black;
+  text-decoration: underline;
 }
 </style>
