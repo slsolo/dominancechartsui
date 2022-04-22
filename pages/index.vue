@@ -10,7 +10,7 @@
   </div>
 </template>
  <style scoped>
-nuxt-link {
+a {
   color: black;
 }
 </style>
